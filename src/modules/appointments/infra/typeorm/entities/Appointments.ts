@@ -2,7 +2,7 @@ import {
   Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,
   ManyToMany, ManyToOne, JoinColumn,
 } from 'typeorm';
-import Users from './Users';
+import Users from '@modules/users/infra/typeorm/entities/Users';
 
 @Entity('appointments')
 class Appointment {
