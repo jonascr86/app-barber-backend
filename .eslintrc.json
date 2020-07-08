@@ -27,6 +27,7 @@
         "no-unused-vars": "warn",
         "class-methods-use-this": "off",
         "camelcase": "warn",
+        "no-useless-constructor": "off",
         // "typescript/no-use-before-define": "warn",
         // "typescript/no-unused-vars": "warn",
         // "prettier/prettier": ["error", {
@@ -43,7 +44,8 @@
       {
         "ts": "never"
       }
-    ]
+    ],
+    "@typescript-eslint/interface-name-prefix":["error", {"prefixWithI": "always"}],
   },
   "settings": {
     "import/resolver":{
