@@ -1,16 +1,16 @@
 import { getRepository, Repository } from 'typeorm';
-import User from '../entities/Users';
+import Users from '../entities/Users';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
 class UsersRepository implements IUsersRepository{
-  private ormRepository: Repository<User>;
+  private ormRepository: Repository<Users>;
 
   constructor(){
-    this.ormRepository = getRepository(User);
+    this.ormRepository = getRepository(Users);
   }
 
-  public async findByDate(date: Date): Promise<User | undefined> {
+  public async findByDate(date: Date): Promise<Users | undefined> {
     const findUser = await this.ormRepository.findOne({
       where: { date },
     });
@@ -18,16 +18,16 @@ class UsersRepository implements IUsersRepository{
     return findUser;
   }
 
-  public async findById(id: string): Promise<User | undefined>{
+  public async findById(id: string): Promise<Users | undefined>{
     const user = await this.ormRepository.findOne(id);
     return user;
   }
-  public async findByEmail(email: string): Promise<User | undefined>{
+  public async findByEmail(email: string): Promise<Users | undefined>{
     const user = await this.ormRepository.findOne({where: {email}});
     return user;
   }
 
-  public async create(userData: ICreateUserDTO): Promise<User>{
+  public async create(userData: ICreateUserDTO): Promise<Users>{
     const User = this.ormRepository.create(userData);
 
     await this.ormRepository.save(User);
@@ -35,7 +35,7 @@ class UsersRepository implements IUsersRepository{
     return User;
   }
 
-  public async save(user: User): Promise<User>{
+  public async save(user: Users): Promise<Users>{
     return this.ormRepository.save(user);
   }
 }

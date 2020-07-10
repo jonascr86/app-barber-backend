@@ -4,6 +4,7 @@ import auth from '@config/auth';
 import Users from '@modules/users/infra/typeorm/entities/Users';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
+import {injectable, inject} from 'tsyringe';
 
 interface IRequest{
   password: string,
@@ -15,8 +16,12 @@ interface IResponse{
   token: string,
 }
 
+@injectable()
 class SessionServices {
-  constructor(private usersRepository: IUsersRepository){}
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+  ){}
 
   public async execute({ password, email }: IRequest): Promise<IResponse> {
 
