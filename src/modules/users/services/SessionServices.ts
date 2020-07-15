@@ -5,6 +5,7 @@ import Users from '@modules/users/infra/typeorm/entities/Users';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import {injectable, inject} from 'tsyringe';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest{
   password: string,
@@ -21,6 +22,9 @@ class SessionServices {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ){}
 
   public async execute({ password, email }: IRequest): Promise<IResponse> {
@@ -31,7 +35,7 @@ class SessionServices {
       throw new AppError('Incorrect email/password combination.', 401);
     }
 
-    const passwordCorrect = await compare(password, user.password);
+    const passwordCorrect = await this.hashProvider.compareHash(password, user.password);
 
     if (!passwordCorrect) {
       throw new AppError('Incorrect email/password combination.', 401);
