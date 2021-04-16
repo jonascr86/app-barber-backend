@@ -1,5 +1,6 @@
-import UserToken from "../infra/typeorm/entities/UserToken";
+import UserTokens from "../infra/typeorm/entities/UserTokens";
 
 export default interface IUserTokensRepository {
-  generate(user_id: string): Promise<UserToken>;
+  generate(user_id: string): Promise<UserTokens>;
+  findByToken(token: string): Promise<UserTokens | undefined>;
 }

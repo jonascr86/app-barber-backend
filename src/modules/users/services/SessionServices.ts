@@ -1,5 +1,5 @@
 import { compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { sign, SignOptions } from 'jsonwebtoken';
 import auth from '@config/auth';
 import Users from '@modules/users/infra/typeorm/entities/Users';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -33,6 +33,10 @@ class SessionServices {
 
     if (!user) {
       throw new AppError('Incorrect email/password combination.', 401);
+    }
+
+    if (!user.password) {
+      throw new AppError('Password undefined.', 401);
     }
 
     const passwordCorrect = await this.hashProvider.compareHash(password, user.password);

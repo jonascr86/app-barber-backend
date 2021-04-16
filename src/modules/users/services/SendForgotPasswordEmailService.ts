@@ -1,8 +1,9 @@
 import Users from '@modules/users/infra/typeorm/entities/Users';
+import path from 'path'
 import IUsersRepository from '../repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
-import IMailProvider from '@shared/container/providers/MailProvider/Model/IMailProvider';
+import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
 
 interface IRequest {
@@ -28,9 +29,22 @@ class SendForgotPasswordEmailService {
       throw new AppError('User does not exists.');
     }
 
-    await this.userTotensRepository.generate(user.id);
-
-    this.mailProvider.sendMail(email, 'Pedido de recuperação de senha recebido!')
+    const userToken = await this.userTotensRepository.generate(user.id);
+    const forgotPasswordTemplate = path.resolve(__dirname, '..', 'views', 'forgot_password.hbs')
+    await this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: '[Barber] Recuperação de Senha',
+      templateData: {
+        file: forgotPasswordTemplate,
+        variables: {
+          name: user.name,
+          link: `http://localhost:3000/reset_password/token=${userToken.token}`,
+        }
+      }
+    })
   }
 
 }

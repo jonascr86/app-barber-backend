@@ -26,6 +26,7 @@ class CreateUserServices {
     if (findUserSameMail) {
       throw new AppError('Email addres already used!');
     }
+
     const hashPassword = await this.hashProvider.generateHash(password);
 
     const user = await this.usersRepository.create({
