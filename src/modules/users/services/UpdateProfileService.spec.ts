@@ -33,6 +33,7 @@ describe('UpdateProfileService', () => {
       name: 'New Name',
       email: 'newemail@mail.user',
       password: '43210',
+      old_password: password,
       user_id: user.id,
     })
 
@@ -40,5 +41,35 @@ describe('UpdateProfileService', () => {
     expect(updatedUser?.email).toBe('newemail@mail.user');
     expect(updatedUser?.password).toBe('43210');
 
-  })
+  });
+  it('should not be able to to change to another user mail', async () => {
+
+    const email = 'mail@user.com';
+    const name = 'Name User';
+    const password = '123456';
+
+    await fakeUserRepository.create(
+      {
+        email: email,
+        name: name,
+        password: password
+      }
+    )
+
+    const user = await fakeUserRepository.create(
+      {
+        email: 'updatemail@user.com',
+        name: 'Name Updated',
+        password: 'passord'
+      }
+    )
+
+    await expect(updateProfileService.execute({
+      name: 'New Name',
+      email: email,
+      password: '43210',
+      old_password: password,
+      user_id: user.id,
+    })).rejects.toBeInstanceOf(AppError);
+   });
 })
