@@ -1,15 +1,13 @@
 import 'reflect-metadata';
 import '@shared/container';
-import '@shared/infra/typeorm';
 import express, {
-  Request, Response, NextFunction, json
+  Request, Response, NextFunction, json,
 } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import uploadConfig from '@config/upload';
 import routes from '@shared/infra/http/routes';
 import AppError from '@shared/errors/AppError';
-
 
 const app = express();
 
@@ -35,5 +33,5 @@ app.use((error: Error, request: Request, response: Response, next: NextFunction)
 });
 
 app.listen(3333, () => {
-  console.log('Server stater on port 3333!');
+  console.log('🚀 Server stater on port 3333!');
 });
