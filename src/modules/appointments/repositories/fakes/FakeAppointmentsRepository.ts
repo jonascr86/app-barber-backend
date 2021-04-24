@@ -4,7 +4,7 @@ import IAppoitmentsRepository from '@modules/appointments/repositories/IAppointm
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentsDTO';
 import { isEqual } from 'date-fns';
 
-class AppointmentsRepository implements IAppoitmentsRepository{
+class FakeAppointmentsRepository implements IAppoitmentsRepository{
   private appointments: Appointment[] = [];
 
   public async findByDate(date: Date): Promise<Appointment | undefined> {
@@ -27,4 +27,4 @@ class AppointmentsRepository implements IAppoitmentsRepository{
   }
 }
 
-export default AppointmentsRepository;
+export default FakeAppointmentsRepository;
