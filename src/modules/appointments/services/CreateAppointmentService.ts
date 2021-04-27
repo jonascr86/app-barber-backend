@@ -6,6 +6,7 @@ import {injectable, inject} from 'tsyringe';
 
 interface IRequest{
   provider_id: string;
+  user_id: string;
   date: Date;
 }
 
@@ -16,7 +17,7 @@ class CreateAppointmentService {
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentRepository){}
 
-  public async execute({ provider_id, date }: IRequest): Promise<Appointments> {
+  public async execute({ provider_id, user_id, date }: IRequest): Promise<Appointments> {
 
     const appointmentDate = startOfHour(date);
 
@@ -28,6 +29,7 @@ class CreateAppointmentService {
 
     const appoitment = await this.appointmentsRepository.create({
       provider_id,
+      user_id,
       date: appointmentDate,
     });
 

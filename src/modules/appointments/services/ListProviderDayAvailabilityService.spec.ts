@@ -15,21 +15,25 @@ describe('ListProviderDayAvailability', () => {
   it('should be able to list availabilitys months', async () => {
     await fakeAppointmentRepository.create({
       provider_id: 'user_id',
+      user_id: 'user',
       date: new Date(2021,3,26,8,0,0)
     })
 
     await fakeAppointmentRepository.create({
       provider_id: 'user_id',
+      user_id: 'user',
       date: new Date(2021,3,26,10,0,0)
     })
 
     await fakeAppointmentRepository.create({
       provider_id: 'user_id',
+      user_id: 'user',
       date: new Date(2021,3,26,11,0,0)
     })
 
     await fakeAppointmentRepository.create({
       provider_id: 'user_id',
+      user_id: 'user',
       date: new Date(2021,3,26,16,0,0)
     })
 
@@ -43,7 +47,7 @@ describe('ListProviderDayAvailability', () => {
       year: 2021,
       day: 26
     })
-    console.log(availability);
+
     expect(availability).toEqual(expect.arrayContaining([
       {"avaliable": false, "hour": 8},
       {"avaliable": false, "hour": 10},

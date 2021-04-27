@@ -11,6 +11,7 @@ describe('CreateAppointment', () => {
       {
         date: new Date(),
         provider_id: '123456',
+        user_id: 'user'
       }
     )
     expect(appointment).toHaveProperty('id');
@@ -26,12 +27,14 @@ describe('CreateAppointment', () => {
     await createAppointmentRepository.execute({
         date: appointmentDate,
         provider_id: '123456',
+        user_id: 'user'
     })
 
     expect(
       createAppointmentRepository.execute({
         date: appointmentDate,
         provider_id: '123456',
+        user_id: 'user'
     })).rejects.toBeInstanceOf(AppError);
 
   })
