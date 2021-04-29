@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns';
+import { startOfHour, isBefore, getHours } from 'date-fns';
 import Appointments from '@modules/appointments/infra/typeorm/entities/Appointments';
 import AppError from '@shared/errors/AppError';
 import IAppointmentRepository from '../repositories/IAppointmentsRepository';
@@ -20,6 +20,19 @@ class CreateAppointmentService {
   public async execute({ provider_id, user_id, date }: IRequest): Promise<Appointments> {
 
     const appointmentDate = startOfHour(date);
+    const appointmentHour = getHours(appointmentDate);
+
+    if(appointmentHour >= 18 || appointmentHour <= 7){
+      throw new AppError("You can't create appontment outside available hours.")
+    }
+
+    if(provider_id === user_id){
+      throw new AppError("You can't create appontment from yourself.")
+    }
+
+    if(isBefore(appointmentDate, Date.now())){
+      throw new AppError("You can't create appointment on a past date.")
+    }
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(appointmentDate);
 
